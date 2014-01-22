@@ -28,7 +28,7 @@ void parseBF(BrainProg* prog, string in)
 			current = loopNode;
 			break;
 		case ']':
-			if(prog->parent)
+			if(current->parent)
 				current = current->parent;
 			break;
 		default:
