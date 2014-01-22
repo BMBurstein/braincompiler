@@ -76,6 +76,7 @@
     <ClCompile Include="Brain.cpp" />
     <ClCompile Include="BrainCompiler.cpp" />
     <ClCompile Include="inputBF.cpp" />
+    <ClCompile Include="outputC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brain.h" />
