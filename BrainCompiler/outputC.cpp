@@ -11,8 +11,8 @@ class CoderC : public Coder
 
 	void gen(const BrainNodeBlock* n)
 	{
-		for(unsigned int i=0; i<n->nodes.size(); i++)
-			n->nodes[i]->codeGen(this);
+		for(NodeItrC it=n->nodes.begin(); it!=n->nodes.end(); it++)
+			(*it)->codeGen(this);
 	}
 
 public:

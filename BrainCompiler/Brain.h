@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <list>
 
 enum NodeOp
 {
@@ -20,7 +20,9 @@ class BrainNodeBlock;
 class BrainNodeOp;
 class BrainNodeInteract;
 class BrainNodeLoop;
-typedef std::vector<BrainNode*> NodeVec;
+typedef std::list<BrainNode*> NodeContainer;
+typedef NodeContainer::iterator NodeItr;
+typedef NodeContainer::const_iterator NodeItrC;
 
 class Coder
 {
@@ -35,19 +37,23 @@ public:
 class BrainNode
 {
 public:
-	BrainNodeBlock* parent;
+	BrainNode(NodeOp op) : op(op) {}
 	virtual void codeGen(Coder* c) const = 0;
 	virtual ~BrainNode() = 0;
+
+	BrainNodeBlock* parent;
+	NodeOp op;
 };
 inline BrainNode::~BrainNode() {}
 
 class BrainNodeBlock : public BrainNode
 {
 public:
+	BrainNodeBlock() : BrainNode(LOOP) {}
 	BrainNode* addNode(BrainNode* node) { node->parent = this; nodes.push_back(node); return node; }
 	virtual ~BrainNodeBlock();
 
-	NodeVec nodes;
+	NodeContainer nodes;
 };
 
 class BrainProg : public BrainNodeBlock
@@ -60,20 +66,17 @@ public:
 class BrainNodeOp : public BrainNode
 {
 public:
-	BrainNodeOp(NodeOp op, int param) : op(op), param(param) {}
+	BrainNodeOp(NodeOp op, int param) : BrainNode(op), param(param) {}
 	virtual void codeGen(Coder* c) const { c->gen(this); }
 
-	NodeOp op;
 	int param;
 };
 
 class BrainNodeInteract : public BrainNode
 {
 public:
-	BrainNodeInteract(NodeOp op) : op(op) {}
+	BrainNodeInteract(NodeOp op) : BrainNode(op) {}
 	virtual void codeGen(Coder* c) const { c->gen(this); }
-
-	NodeOp op;
 };
 
 class BrainNodeLoop : public BrainNodeBlock

@@ -2,6 +2,6 @@
 
 BrainNodeBlock::~BrainNodeBlock()
 {
-	for(unsigned int i=0; i<nodes.size(); i++)
-		delete nodes[i];
+	for(NodeItrC it=nodes.begin(); it!=nodes.end(); it++)
+		delete *it;
 }
