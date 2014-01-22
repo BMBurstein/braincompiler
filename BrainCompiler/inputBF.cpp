@@ -3,9 +3,9 @@
 #include <string>
 using namespace std;
 
-void parseBF(BrainNodeProg* prog, string in)
+void parseBF(BrainProg* prog, string in)
 {
-	BrainNodeProg* current = prog;
+	BrainNodeBlock* current = prog;
 	BrainNodeLoop* loopNode;
 
 	for(unsigned int i = 0; i < in.length(); i++)
@@ -16,20 +16,20 @@ void parseBF(BrainNodeProg* prog, string in)
 		case '-':
 		case '<':
 		case '>':
-			prog->addNode(new BrainNodeOp((NodeOp)in[i], 1));
+			current->addNode(new BrainNodeOp((NodeOp)in[i], 1));
 			break;
 		case '.':
 		case ',':
-			prog->addNode(new BrainNodeInteract((NodeOp)in[i]));
+			current->addNode(new BrainNodeInteract((NodeOp)in[i]));
 			break;
 		case '[':
 			loopNode = new BrainNodeLoop();
-			prog->addNode(loopNode);
-			prog = loopNode;
+			current->addNode(loopNode);
+			current = loopNode;
 			break;
 		case ']':
 			if(prog->parent)
-				prog = prog->parent;
+				current = current->parent;
 			break;
 		default:
 			break;

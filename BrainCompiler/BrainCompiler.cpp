@@ -3,12 +3,12 @@
 #include <string>
 using namespace std;
 
-void parseBF(BrainNodeProg* prog, string in);
+void parseBF(BrainProg* prog, string in);
 
 int main()
 {
 	string s = "+++--+<%>>.<[+[[,,.-[<<>><-=+]+]-]],..-";
-	BrainNodeProg p;
+	BrainProg p;
 	parseBF(&p, s);
 	return 0;
 }

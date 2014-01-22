@@ -14,7 +14,7 @@ enum NodeOp
 };
 
 class BrainNode;
-class BrainNodeProg;
+class BrainNodeBlock;
 typedef std::vector<BrainNode* > NodeVec;
 
 class Coder;
@@ -22,20 +22,26 @@ class Coder;
 class BrainNode
 {
 public:
-	BrainNodeProg* parent;
+	BrainNodeBlock* parent;
 	virtual void codeGen(Coder const& c) = 0;
 	virtual ~BrainNode() = 0;
 };
 inline BrainNode::~BrainNode() {}
 
-class BrainNodeProg : public BrainNode
+class BrainNodeBlock : public BrainNode
 {
 	NodeVec nodes;
 public:
-	BrainNodeProg() { parent = NULL; }
 	virtual void codeGen(Coder const& c);
 	BrainNode* addNode(BrainNode* node) { node->parent = this; nodes.push_back(node); return node; }
-	~BrainNodeProg();
+	~BrainNodeBlock();
+};
+
+class BrainProg : public BrainNodeBlock
+{
+public:
+	BrainProg() { parent = NULL; }
+	virtual void codeGen(Coder const& c);
 };
 
 class BrainNodeOp : public BrainNode
@@ -55,8 +61,18 @@ public:
 	virtual void codeGen(Coder const& c);
 };
 
-class BrainNodeLoop : public BrainNodeProg
+class BrainNodeLoop : public BrainNodeBlock
 {
 public:
 	virtual void codeGen(Coder const& c);
+};
+
+class Coder
+{
+public:
+	virtual void gen(BrainProg);
+	virtual void gen(BrainNodeOp);
+	virtual void gen(BrainNodeInteract);
+	virtual void gen(BrainNodeLoop);
+	virtual ~Coder() {};
 };

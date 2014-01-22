@@ -1,10 +1,10 @@
 #include "Brain.h"
 
-void BrainNodeProg::codeGen(Coder const& c)
+void BrainNodeBlock::codeGen(Coder const& c)
 {
 }
 
-BrainNodeProg::~BrainNodeProg()
+BrainNodeProg::~BrainNodeBlock()
 {
 	for(unsigned int i=0; i<nodes.size(); i++)
 		delete nodes[i];
